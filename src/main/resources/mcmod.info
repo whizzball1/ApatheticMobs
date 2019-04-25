@@ -1,0 +1,16 @@
+[
+{
+  "modid": "apatheticmobs",
+  "name": "Apathetic Mobs",
+  "description": "Mobs never attack you.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["whizzball1"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
