@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import whizzball1.apatheticmobs.capability.IRevengeCap;
 import whizzball1.apatheticmobs.capability.RevengeCapFactory;
 import whizzball1.apatheticmobs.capability.RevengeStorage;
-import whizzball1.apatheticmobs.config.DoWhatYouWant;
 import whizzball1.apatheticmobs.handlers.ApatheticHandler;
 
 import java.util.Random;
@@ -32,7 +31,7 @@ public class ApatheticMobs {
 
     public static final String MOD_ID = "apatheticmobs";
     public static final String MOD_NAME = "ApatheticMobs";
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "1.4";
 
     public static final Logger logger = LogManager.getLogger(MOD_NAME);
     public static final Random random = new Random();
@@ -47,7 +46,7 @@ public class ApatheticMobs {
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        DoWhatYouWant.makeTheFile();
+        //DoWhatYouWant.makeTheFile();
         CapabilityManager.INSTANCE.register(IRevengeCap.class, RevengeStorage.STORAGE, new RevengeCapFactory());
     }
 

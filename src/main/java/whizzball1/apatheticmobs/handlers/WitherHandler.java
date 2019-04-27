@@ -12,7 +12,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
 import whizzball1.apatheticmobs.ApatheticMobs;
-import whizzball1.apatheticmobs.config.DoWhatYouWant;
+import whizzball1.apatheticmobs.config.ApatheticConfig;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -27,11 +27,11 @@ public class WitherHandler {
     public EntityWither wither;
     public WitherHandler(EntityWither e) {
         wither = e;
-        if (!DoWhatYouWant.witherRevenge) {
+        if (!ApatheticConfig.bossRules.witherRevenge) {
             wither.tasks.taskEntries.removeIf(t-> t.action instanceof EntityAIAttackRanged);
             wither.targetTasks.taskEntries.removeIf(t->t.action instanceof EntityAINearestAttackableTarget);
         }
-        if (!DoWhatYouWant.witherAttacks) {
+        if (!ApatheticConfig.bossRules.witherAttacks) {
             wither.NOT_UNDEAD = t->false;
         }
     }

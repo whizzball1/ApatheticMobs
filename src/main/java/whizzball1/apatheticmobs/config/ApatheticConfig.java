@@ -8,12 +8,15 @@ public class ApatheticConfig {
 
     @Config.Name("Basic Rules")
     public static RulesCategory rules = new RulesCategory();
+    @Config.Name("Boss Rules")
+    public static BossCategory bossRules = new BossCategory();
 
 
-    private static class RulesCategory {
+    public static class RulesCategory {
 
         @Config.Name("Revenge Option")
         @Config.Comment("If true, mobs will attack you back; if false, they will never attack you back.")
+        @Config.RequiresWorldRestart
         public boolean revenge = false;
 
         @Config.Name("Revenge Timer Option")
@@ -56,5 +59,32 @@ public class ApatheticConfig {
         @Config.Name("List of Whitelisted Players")
         @Config.Comment("List of players whom mobs will ignore.")
         public String[] playerList = new String[] {"Player501"};
+    }
+
+    public static class BossCategory {
+        @Config.Name("Dragon Flying Attack Option")
+        @Config.Comment("If true, ender dragon will attack the player when flying.")
+        @Config.RequiresWorldRestart
+        public boolean dragonFlies = false;
+
+        @Config.Name("Dragon Sitting Attack Option")
+        @Config.Comment("If true, ender dragon will attack the player when sitting—you should set this to true so you can get dragon's breath!")
+        @Config.RequiresWorldRestart
+        public boolean dragonSits = false;
+
+        @Config.Name("Wither Revenge Option")
+        @Config.Comment("If true, wither will take revenge.")
+        @Config.RequiresWorldRestart
+        public boolean witherRevenge = false;
+
+        @Config.Name("Wither Attack Option")
+        @Config.Comment("If true, wither will attack you; if false, wither will neither attack you nor, well, anything")
+        @Config.RequiresWorldRestart
+        public boolean witherAttacks = false;
+
+        @Config.Name("Gaia Attack Option")
+        @Config.Comment("If true, Gaia Guardian will send attacks at you and the magic floor will exist. If false, it will only spawn mobs.")
+        public boolean gaia = false;
+
     }
 }

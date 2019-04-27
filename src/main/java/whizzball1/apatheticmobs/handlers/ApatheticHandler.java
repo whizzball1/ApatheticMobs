@@ -1,6 +1,5 @@
 package whizzball1.apatheticmobs.handlers;
 
-import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -30,15 +29,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import whizzball1.apatheticmobs.ApatheticMobs;
 import whizzball1.apatheticmobs.capability.IRevengeCap;
 import whizzball1.apatheticmobs.capability.RevengeProvider;
-import whizzball1.apatheticmobs.config.DoWhatYouWant;
+import whizzball1.apatheticmobs.config.ApatheticConfig;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class ApatheticHandler {
 
     @SubscribeEvent
     public void apathy(LivingSetAttackTargetEvent e) {
-            if (DoWhatYouWant.difficultyLock) {
+            if (ApatheticConfig.rules.difficultyLock) {
                 if (!(difficultyMatch(e))) return;
             }
             EntityLivingBase entity = e.getEntityLiving();
@@ -81,7 +82,7 @@ public class ApatheticHandler {
     public void checkSpawns(EntityJoinWorldEvent e) {
         Entity ent = e.getEntity();
         if (!ent.getEntityWorld().isRemote) if (ent instanceof EntityLiving){
-            if (!DoWhatYouWant.revenge) {
+            if (!ApatheticConfig.rules.revenge) {
                 //ApatheticMobs.logger.info(EntityList.getKey(ent) + "cancelling revenge");
                 ((EntityLiving) ent).targetTasks.taskEntries.removeIf(t->t.action instanceof EntityAIHurtByTarget);
                 //((EntityLiving) ent).tasks.executingTaskEntries.removeIf(t->t.action instanceof EntityAIHurtByTarget);
@@ -97,7 +98,7 @@ public class ApatheticHandler {
             }
             ResourceLocation key = EntityList.getKey(ent);
             if (key != null) {
-                if (!DoWhatYouWant.gaia) {
+                if (!ApatheticConfig.bossRules.gaia) {
                     if (key.equals(new ResourceLocation("botania", "magic_missile"))
                             || key.equals(new ResourceLocation("botania", "magic_landmine"))) {
                         e.setCanceled(true);
@@ -112,7 +113,7 @@ public class ApatheticHandler {
 
     @SubscribeEvent
     public void addCap(AttachCapabilitiesEvent<Entity> e) {
-        if (DoWhatYouWant.revenge) if (e.getObject() instanceof EntityLiving) if (!e.getObject().getEntityWorld().isRemote) {
+        if (ApatheticConfig.rules.revenge) if (e.getObject() instanceof EntityLiving) if (!e.getObject().getEntityWorld().isRemote) {
             e.addCapability(RevengeProvider.NAME, new RevengeProvider());
         }
     }
@@ -153,7 +154,7 @@ public class ApatheticHandler {
                     }
                 }
             }
-            if (!DoWhatYouWant.witherAttacks){
+            if (!ApatheticConfig.bossRules.witherAttacks){
                 for (UUID id : WitherHandler.handlers.keySet()) {
                     WitherHandler.handlers.get(id).tick();
                 }
@@ -166,9 +167,9 @@ public class ApatheticHandler {
 
     public boolean doI(EntityLivingBase entity) {
         boolean yes;
-        if (DoWhatYouWant.blacklist) {
+        if (ApatheticConfig.rules.blacklist) {
             yes = true;
-            for (String id : DoWhatYouWant.exclusions) {
+            for (String id : ApatheticConfig.rules.exclusions) {
                 ResourceLocation loc = EntityList.getKey(entity.getClass());
                 if (loc.toString().equals(id)) {
                     yes = false;
@@ -177,7 +178,7 @@ public class ApatheticHandler {
             }
         } else {
             yes = false;
-            for (String id : DoWhatYouWant.inclusions) {
+            for (String id : ApatheticConfig.rules.inclusions) {
                 ResourceLocation loc = EntityList.getKey(entity.getClass());
                 if (loc.toString().equals(id)) {
                     yes = true;
@@ -185,10 +186,9 @@ public class ApatheticHandler {
                 }
             }
         }
-        if (yes && DoWhatYouWant.revenge) {
+        if (yes && ApatheticConfig.rules.revenge) {
             IRevengeCap capability = null;
             if (entity.hasCapability(ApatheticMobs.REVENGE_CAPABILITY, null)) {
-                ApatheticMobs.logger.info("has capability");
                 capability = entity.getCapability(ApatheticMobs.REVENGE_CAPABILITY, null);
             }
             if (entity.getRevengeTarget() != null) {
@@ -203,15 +203,15 @@ public class ApatheticHandler {
                 }
             }
         }
-        if (yes && !DoWhatYouWant.revenge && entity.getRevengeTarget() != null) entity.setRevengeTarget(null);
+        if (yes && !ApatheticConfig.rules.revenge && entity.getRevengeTarget() != null) entity.setRevengeTarget(null);
         return yes;
     }
 
     public boolean isCorrectPlayer(EntityLivingBase entity) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer ep = (EntityPlayer) entity;
-            if (DoWhatYouWant.playerWhitelist) {
-                if (DoWhatYouWant.playerSet.contains(ep.getName())) {
+            if (ApatheticConfig.rules.playerWhitelist) {
+                if (new HashSet<>(Arrays.asList(ApatheticConfig.rules.playerList)).contains(ep.getName())) {
                     return true;
                 } else return false;
             } else return true;
@@ -236,7 +236,7 @@ public class ApatheticHandler {
     public boolean difficultyMatch(LivingEvent e) {
         boolean yes = false;
         String currentDifficulty = idToDifficulty(e.getEntityLiving().getEntityWorld().getDifficulty().getDifficultyId());
-        for (String difficulty : DoWhatYouWant.difficulties) {
+        for (String difficulty : ApatheticConfig.rules.difficulties) {
             if (currentDifficulty.equals(difficulty)) {
                 yes = true;
             }
@@ -245,8 +245,8 @@ public class ApatheticHandler {
     }
 
     public boolean revengeOver(IRevengeCap capability, EntityLivingBase entity) {
-        if (!DoWhatYouWant.revengeTime) return false;
-        if (entity.ticksExisted - capability.getTimer() > DoWhatYouWant.revengeTimer) {
+        if (!ApatheticConfig.rules.revengeTime) return false;
+        if (entity.ticksExisted - capability.getTimer() > ApatheticConfig.rules.revengeTimer) {
             return true;
         }
         return false;

@@ -6,7 +6,7 @@ import net.minecraft.entity.boss.dragon.phase.PhaseBase;
 import net.minecraft.entity.boss.dragon.phase.PhaseList;
 import net.minecraft.entity.boss.dragon.phase.PhaseStrafePlayer;
 import whizzball1.apatheticmobs.ApatheticMobs;
-import whizzball1.apatheticmobs.config.DoWhatYouWant;
+import whizzball1.apatheticmobs.config.ApatheticConfig;
 
 import java.util.*;
 
@@ -42,11 +42,11 @@ public class DragonHandler {
         IPhase currentPhase = this.dragon.getPhaseManager().getCurrentPhase();
         //ApatheticMobs.logger.info(currentPhase.getType().toString());
         if (currentPhase.getType() == PhaseList.STRAFE_PLAYER || currentPhase.getType() == PhaseList.CHARGING_PLAYER
-        && !DoWhatYouWant.dragonFlies) {
+        && !ApatheticConfig.bossRules.dragonFlies) {
             this.dragon.getPhaseManager().setPhase(PhaseList.LANDING_APPROACH);
         }
         if (currentPhase.getType() == PhaseList.SITTING_FLAMING || currentPhase.getType() == PhaseList.SITTING_ATTACKING
-        && !DoWhatYouWant.dragonSits) {
+        && !ApatheticConfig.bossRules.dragonSits) {
             this.dragon.getPhaseManager().setPhase(PhaseList.SITTING_SCANNING);
         }
     }
