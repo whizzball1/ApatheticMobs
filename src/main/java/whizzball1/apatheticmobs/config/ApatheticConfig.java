@@ -3,6 +3,11 @@ package whizzball1.apatheticmobs.config;
 import net.minecraftforge.common.config.Config;
 import whizzball1.apatheticmobs.ApatheticMobs;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Config(modid=ApatheticMobs.MOD_ID)
 public class ApatheticConfig {
 
@@ -10,6 +15,11 @@ public class ApatheticConfig {
     public static RulesCategory rules = new RulesCategory();
     @Config.Name("Boss Rules")
     public static BossCategory bossRules = new BossCategory();
+
+    public static List<String> defaults = new ArrayList<>();
+    {
+        defaults.add("Player501");
+    }
 
 
     public static class RulesCategory {
@@ -59,6 +69,8 @@ public class ApatheticConfig {
         @Config.Name("List of Whitelisted Players")
         @Config.Comment("List of players whom mobs will ignore.")
         public String[] playerList = new String[] {"Player501"};
+
+        public Set<String> playerList2 = new HashSet<>();
     }
 
     public static class BossCategory {
@@ -77,6 +89,8 @@ public class ApatheticConfig {
         @Config.RequiresWorldRestart
         public boolean witherRevenge = false;
 
+
+
         @Config.Name("Wither Attack Option")
         @Config.Comment("If true, wither will attack you; if false, wither will neither attack you nor, well, anything")
         @Config.RequiresWorldRestart
@@ -85,6 +99,10 @@ public class ApatheticConfig {
         @Config.Name("Gaia Attack Option")
         @Config.Comment("If true, Gaia Guardian will send attacks at you and the magic floor will exist. If false, it will only spawn mobs.")
         public boolean gaia = false;
+
+        @Config.Name("Chaos Dragon Projectile Option")
+        @Config.Comment("If true, chaos dragon will send projectiles at you. If false, it will not.")
+        public boolean chaosProjectiles = false;
 
     }
 }

@@ -1,5 +1,6 @@
 package whizzball1.apatheticmobs.handlers;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -10,9 +11,12 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.DifficultyChangeEvent;
@@ -21,7 +25,9 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,6 +36,7 @@ import whizzball1.apatheticmobs.ApatheticMobs;
 import whizzball1.apatheticmobs.capability.IRevengeCap;
 import whizzball1.apatheticmobs.capability.RevengeProvider;
 import whizzball1.apatheticmobs.config.ApatheticConfig;
+import whizzball1.apatheticmobs.data.WhitelistData;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -107,6 +114,9 @@ public class ApatheticHandler {
                 if (key.equals(new ResourceLocation("mightyenderchicken", "ent_EggBomb"))) {
                     e.setCanceled(true);
                 }
+                if (key.equals(new ResourceLocation("draconicevolution", "GuardianProjectile"))) {
+                    e.setCanceled(true);
+                }
             }
         }
     }
@@ -116,6 +126,11 @@ public class ApatheticHandler {
         if (ApatheticConfig.rules.revenge) if (e.getObject() instanceof EntityLiving) if (!e.getObject().getEntityWorld().isRemote) {
             e.addCapability(RevengeProvider.NAME, new RevengeProvider());
         }
+    }
+
+    @SubscribeEvent
+    public void worldCap(AttachCapabilitiesEvent<World> e) {
+
     }
 
     @SubscribeEvent
@@ -162,6 +177,17 @@ public class ApatheticHandler {
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public void serverStarted(FMLServerStartedEvent e) {
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if (server != null) {
+            World world = server.getEntityWorld();
+            if (world != null && !world.isRemote) {
+                WhitelistData.data = WhitelistData.get(world);
+            }
+        }
     }
 
 
@@ -256,6 +282,9 @@ public class ApatheticHandler {
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {
         if (e.getModID().equals(ApatheticMobs.MOD_ID)) {
             ConfigManager.sync(ApatheticMobs.MOD_ID, Config.Type.INSTANCE);
+            ApatheticConfig.rules.playerList2 = new HashSet<>(Lists.newArrayList(ApatheticConfig.rules.playerList));
+
+
         }
     }
 
