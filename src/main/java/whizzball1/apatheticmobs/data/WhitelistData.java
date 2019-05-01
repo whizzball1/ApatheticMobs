@@ -18,13 +18,19 @@ public class WhitelistData extends WorldSavedData {
 
     public WhitelistData(String name) {
         super(name);
-        this.markDirty();
     }
 
     public static WhitelistData get(World world) {
-        WhitelistData instance = (WhitelistData) world.getMapStorage().getOrLoadData(WhitelistData.class, dataName);
-        if (instance == null) instance = new WhitelistData(dataName);
-        return instance;
+        if (data == null) {
+            WhitelistData instance = (WhitelistData) world.getMapStorage().getOrLoadData(WhitelistData.class, dataName);
+            if (instance == null) {
+                instance = new WhitelistData(dataName);
+                world.setData(dataName, instance);
+                instance.markDirty();
+            }
+            data = instance;
+        }
+        return data;
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {

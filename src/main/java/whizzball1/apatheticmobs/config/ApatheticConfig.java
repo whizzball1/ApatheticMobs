@@ -16,11 +16,6 @@ public class ApatheticConfig {
     @Config.Name("Boss Rules")
     public static BossCategory bossRules = new BossCategory();
 
-    public static List<String> defaults = new ArrayList<>();
-    {
-        defaults.add("Player501");
-    }
-
 
     public static class RulesCategory {
 
@@ -70,7 +65,6 @@ public class ApatheticConfig {
         @Config.Comment("List of players whom mobs will ignore.")
         public String[] playerList = new String[] {"Player501"};
 
-        public Set<String> playerList2 = new HashSet<>();
     }
 
     public static class BossCategory {

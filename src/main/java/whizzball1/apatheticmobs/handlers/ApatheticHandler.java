@@ -179,17 +179,6 @@ public class ApatheticHandler {
 
     }
 
-    @SubscribeEvent
-    public void serverStarted(FMLServerStartedEvent e) {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (server != null) {
-            World world = server.getEntityWorld();
-            if (world != null && !world.isRemote) {
-                WhitelistData.data = WhitelistData.get(world);
-            }
-        }
-    }
-
 
     public boolean doI(EntityLivingBase entity) {
         boolean yes;
@@ -237,7 +226,7 @@ public class ApatheticHandler {
         if (entity instanceof EntityPlayer) {
             EntityPlayer ep = (EntityPlayer) entity;
             if (ApatheticConfig.rules.playerWhitelist) {
-                if (new HashSet<>(Arrays.asList(ApatheticConfig.rules.playerList)).contains(ep.getName())) {
+                if (WhitelistData.get(entity.getEntityWorld()).playerSet.contains(ep.getUniqueID())) {
                     return true;
                 } else return false;
             } else return true;
@@ -282,7 +271,6 @@ public class ApatheticHandler {
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {
         if (e.getModID().equals(ApatheticMobs.MOD_ID)) {
             ConfigManager.sync(ApatheticMobs.MOD_ID, Config.Type.INSTANCE);
-            ApatheticConfig.rules.playerList2 = new HashSet<>(Lists.newArrayList(ApatheticConfig.rules.playerList));
 
 
         }

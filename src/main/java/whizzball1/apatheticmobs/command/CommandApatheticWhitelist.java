@@ -13,6 +13,7 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.ConfigManager;
 import whizzball1.apatheticmobs.ApatheticMobs;
 import whizzball1.apatheticmobs.config.ApatheticConfig;
+import whizzball1.apatheticmobs.data.WhitelistData;
 
 import java.util.*;
 
@@ -47,9 +48,23 @@ public class CommandApatheticWhitelist extends CommandBase {
             throw new CommandException("commands.apatheticmobs.aw.playerfailed");
         }
         UUID id = gameProfile.getId();
+        WhitelistData data = WhitelistData.get(sender.getEntityWorld());
         switch (args[0]) {
             case "get":
                 sender.sendMessage(new TextComponentString(id.toString()));
+            case "add":
+                if (!data.playerSet.contains(id)) {
+                    data.playerSet.add(id);
+                    data.markDirty();
+                } else {
+                    sender.sendMessage(new TextComponentTranslation(gameProfile.getName() + "commands.apatheticmobs.aw.playerfound"));
+                }
+            case "remove":
+                if (data.playerSet.contains(id)) {
+                    data.playerSet.remove(id);
+                } else {
+                    sender.sendMessage(new TextComponentTranslation("commands.apatheticmobs.aw.playerfailed"));
+                }
         }
     }
 }
