@@ -34,7 +34,7 @@ public class ApatheticMobs {
 
     public static final String MOD_ID = "apatheticmobs";
     public static final String MOD_NAME = "ApatheticMobs";
-    public static final String VERSION = "1.4";
+    public static final String VERSION = "1.4.1";
 
     public static final Logger logger = LogManager.getLogger(MOD_NAME);
     public static final Random random = new Random();
