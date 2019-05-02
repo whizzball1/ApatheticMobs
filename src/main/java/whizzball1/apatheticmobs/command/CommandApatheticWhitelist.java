@@ -40,10 +40,11 @@ public class CommandApatheticWhitelist extends CommandBase {
     }
 
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (args.length != 2) {
+        boolean test = args.length != 2;
+        if (test && !args[0].equals("get")) {
             throw new WrongUsageException(getUsage(sender));
         }
-        GameProfile gameProfile = server.getPlayerProfileCache().getGameProfileForUsername(args[1]);
+        GameProfile gameProfile = server.getPlayerProfileCache().getGameProfileForUsername(test ? "t" : args[1]);
         if (gameProfile == null) {
             throw new CommandException("commands.apatheticmobs.aw.playerfailed");
         }
@@ -51,20 +52,36 @@ public class CommandApatheticWhitelist extends CommandBase {
         WhitelistData data = WhitelistData.get(sender.getEntityWorld());
         switch (args[0]) {
             case "get":
-                sender.sendMessage(new TextComponentString(id.toString()));
+                StringBuilder b = new StringBuilder();
+                for (UUID i : data.playerSet) {
+                    b.append(server.getPlayerProfileCache().getProfileByUUID(i).getName());
+                    b.append(", ");
+                }
+                b.reverse();
+                try {
+                    b.delete(0, 2);
+                } catch (StringIndexOutOfBoundsException e) {
+
+                }
+                b.reverse();
+                sender.sendMessage(new TextComponentString(b.toString()));
+                break;
             case "add":
                 if (!data.playerSet.contains(id)) {
                     data.playerSet.add(id);
                     data.markDirty();
                 } else {
-                    sender.sendMessage(new TextComponentTranslation(gameProfile.getName() + "commands.apatheticmobs.aw.playerfound"));
+                    sender.sendMessage(new TextComponentTranslation("commands.apatheticmobs.aw.playerfound"));
                 }
+                break;
             case "remove":
                 if (data.playerSet.contains(id)) {
                     data.playerSet.remove(id);
+                    data.markDirty();
                 } else {
                     sender.sendMessage(new TextComponentTranslation("commands.apatheticmobs.aw.playerfailed"));
                 }
+                break;
         }
     }
 }

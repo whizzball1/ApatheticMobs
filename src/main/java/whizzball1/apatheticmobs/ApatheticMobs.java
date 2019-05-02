@@ -10,10 +10,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.event.RegistryEvent;
@@ -22,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import whizzball1.apatheticmobs.capability.IRevengeCap;
 import whizzball1.apatheticmobs.capability.RevengeCapFactory;
 import whizzball1.apatheticmobs.capability.RevengeStorage;
+import whizzball1.apatheticmobs.command.ModCommands;
 import whizzball1.apatheticmobs.data.WhitelistData;
 import whizzball1.apatheticmobs.handlers.ApatheticHandler;
 
@@ -68,6 +66,12 @@ public class ApatheticMobs {
     }
 
     @Mod.EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+        ModCommands.registerCommands(event);
+
+    }
+
+    @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent e) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (server != null) {
@@ -77,4 +81,6 @@ public class ApatheticMobs {
             }
         }
     }
+
+
 }

@@ -22,6 +22,7 @@ public class WhitelistData extends WorldSavedData {
 
     public static WhitelistData get(World world) {
         if (data == null) {
+            ApatheticMobs.logger.info("data was null");
             WhitelistData instance = (WhitelistData) world.getMapStorage().getOrLoadData(WhitelistData.class, dataName);
             if (instance == null) {
                 instance = new WhitelistData(dataName);
@@ -34,6 +35,7 @@ public class WhitelistData extends WorldSavedData {
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        ApatheticMobs.logger.info("writing to NBT!");
         NBTTagList playerList = new NBTTagList();
         for (UUID player : playerSet) {
             NBTTagCompound newCompound = new NBTTagCompound();
@@ -45,6 +47,7 @@ public class WhitelistData extends WorldSavedData {
     }
 
     public void readFromNBT(NBTTagCompound compound) {
+        ApatheticMobs.logger.info("reading from NBT!");
         NBTTagList playerList = compound.getTagList("List", 10);
         playerList.iterator().forEachRemaining(t -> playerSet.add(((NBTTagCompound) t).getUniqueId("UUID")));
     }

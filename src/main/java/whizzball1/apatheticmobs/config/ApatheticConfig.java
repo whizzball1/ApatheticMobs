@@ -58,12 +58,8 @@ public class ApatheticConfig {
         public String[] difficulties = new String[] {"easy"};
 
         @Config.Name("Player Whitelist Option (Untested)")
-        @Config.Comment("If true, mod will only cause mobs to ignore players listed in playerList.")
+        @Config.Comment("If true, mod will only cause mobs to ignore players whitelisted by the command apatheticwhitelist.")
         public boolean playerWhitelist = false;
-
-        @Config.Name("List of Whitelisted Players")
-        @Config.Comment("List of players whom mobs will ignore.")
-        public String[] playerList = new String[] {"Player501"};
 
     }
 
@@ -82,6 +78,10 @@ public class ApatheticConfig {
         @Config.Comment("If true, wither will take revenge.")
         @Config.RequiresWorldRestart
         public boolean witherRevenge = false;
+
+        @Config.Name("General Boss Option")
+        @Config.Comment("If true, any mobs with the flag 'isBoss' will be ignored by this mod. So Eldritch Guardian, for example.")
+        public boolean bossOption = false;
 
 
 

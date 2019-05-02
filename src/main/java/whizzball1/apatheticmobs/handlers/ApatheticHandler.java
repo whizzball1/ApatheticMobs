@@ -182,6 +182,7 @@ public class ApatheticHandler {
 
     public boolean doI(EntityLivingBase entity) {
         boolean yes;
+        if (!entity.isNonBoss() && ApatheticConfig.bossRules.bossOption) return false;
         if (ApatheticConfig.rules.blacklist) {
             yes = true;
             for (String id : ApatheticConfig.rules.exclusions) {
