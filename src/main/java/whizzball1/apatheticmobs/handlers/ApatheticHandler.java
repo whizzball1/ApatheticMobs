@@ -37,14 +37,17 @@ import whizzball1.apatheticmobs.capability.IRevengeCap;
 import whizzball1.apatheticmobs.capability.RevengeProvider;
 import whizzball1.apatheticmobs.config.ApatheticConfig;
 import whizzball1.apatheticmobs.data.WhitelistData;
+import whizzball1.apatheticmobs.rules.DifficultyLockRule;
+import whizzball1.apatheticmobs.rules.TargeterTypeRule;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 
 public class ApatheticHandler {
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public void apathy(LivingSetAttackTargetEvent e) {
             if (ApatheticConfig.rules.difficultyLock) {
                 if (!(difficultyMatch(e))) return;
@@ -100,7 +103,7 @@ public class ApatheticHandler {
             } else if (ent instanceof EntityWither) {
                 WitherHandler.createNewHandler((EntityWither) ent);
                 ApatheticMobs.logger.info("A wither has spawned!");
-            } else if (ent instanceof EntitySlime) {
+            } else if (!ApatheticConfig.rules.playerWhitelist) if (ent instanceof EntitySlime) {
                 ((EntitySlime) ent).targetTasks.taskEntries.removeIf(t->t.action instanceof EntityAIFindEntityNearestPlayer);
             }
             ResourceLocation key = EntityList.getKey(ent);
@@ -114,8 +117,9 @@ public class ApatheticHandler {
                 if (key.equals(new ResourceLocation("mightyenderchicken", "ent_EggBomb"))) {
                     e.setCanceled(true);
                 }
-                if (key.equals(new ResourceLocation("draconicevolution", "GuardianProjectile"))) {
-                    e.setCanceled(true);
+                if (!ApatheticConfig.bossRules.chaosProjectiles)
+                    if (key.equals(new ResourceLocation("draconicevolution", "GuardianProjectile"))) {
+                        e.setCanceled(true);
                 }
             }
         }
@@ -177,6 +181,11 @@ public class ApatheticHandler {
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public void onDifficultyChanged(DifficultyChangeEvent e) {
+        DifficultyLockRule.difficultyChange(e.getDifficulty());
     }
 
 
@@ -273,6 +282,13 @@ public class ApatheticHandler {
         if (e.getModID().equals(ApatheticMobs.MOD_ID)) {
             ConfigManager.sync(ApatheticMobs.MOD_ID, Config.Type.INSTANCE);
 
+            DifficultyLockRule.allowedDifficulties.clear();
+            Collections.addAll(DifficultyLockRule.allowedDifficulties, ApatheticConfig.rules.difficulties);
+
+            TargeterTypeRule.exclusions.clear();
+            Arrays.asList(ApatheticConfig.rules.exclusions).forEach(t -> TargeterTypeRule.exclusions.add(new ResourceLocation(t)));
+            TargeterTypeRule.inclusions.clear();
+            Arrays.asList(ApatheticConfig.rules.inclusions).forEach(t -> TargeterTypeRule.inclusions.add(new ResourceLocation(t)));
 
         }
     }

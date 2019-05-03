@@ -3,6 +3,7 @@ package whizzball1.apatheticmobs;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -20,9 +21,16 @@ import whizzball1.apatheticmobs.capability.IRevengeCap;
 import whizzball1.apatheticmobs.capability.RevengeCapFactory;
 import whizzball1.apatheticmobs.capability.RevengeStorage;
 import whizzball1.apatheticmobs.command.ModCommands;
+import whizzball1.apatheticmobs.config.ApatheticConfig;
 import whizzball1.apatheticmobs.data.WhitelistData;
 import whizzball1.apatheticmobs.handlers.ApatheticHandler;
+import whizzball1.apatheticmobs.handlers.RuleHandler;
+import whizzball1.apatheticmobs.rules.DifficultyLockRule;
+import whizzball1.apatheticmobs.rules.Rules;
+import whizzball1.apatheticmobs.rules.TargeterTypeRule;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 @Mod(
@@ -38,6 +46,8 @@ public class ApatheticMobs {
 
     public static final Logger logger = LogManager.getLogger(MOD_NAME);
     public static final Random random = new Random();
+
+    public static final Rules rules = new Rules();
 
     @CapabilityInject(IRevengeCap.class)
     public static final Capability<IRevengeCap> REVENGE_CAPABILITY = null;
@@ -57,6 +67,7 @@ public class ApatheticMobs {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new ApatheticHandler());
+        MinecraftForge.EVENT_BUS.register(new RuleHandler());
     }
 
 
@@ -73,13 +84,24 @@ public class ApatheticMobs {
 
     @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent e) {
+
+        DifficultyLockRule.allowedDifficulties.clear();
+        Collections.addAll(DifficultyLockRule.allowedDifficulties, ApatheticConfig.rules.difficulties);
+
+        TargeterTypeRule.exclusions.clear();
+        Arrays.asList(ApatheticConfig.rules.exclusions).forEach(t -> TargeterTypeRule.exclusions.add(new ResourceLocation(t)));
+        TargeterTypeRule.inclusions.clear();
+        Arrays.asList(ApatheticConfig.rules.inclusions).forEach(t -> TargeterTypeRule.inclusions.add(new ResourceLocation(t)));
+
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (server != null) {
             World world = server.getEntityWorld();
+            DifficultyLockRule.difficultyMatch(world, true);
             if (!world.isRemote) {
                 WhitelistData.get(world);
             }
         }
+
     }
 
 
