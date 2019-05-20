@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -36,7 +37,8 @@ import java.util.Random;
 @Mod(
         modid = ApatheticMobs.MOD_ID,
         name = ApatheticMobs.MOD_NAME,
-        version = ApatheticMobs.VERSION
+        version = ApatheticMobs.VERSION,
+        dependencies = "required-after:forge@[14.23.5.2824,)"
 )
 public class ApatheticMobs {
 
@@ -51,6 +53,7 @@ public class ApatheticMobs {
 
     @CapabilityInject(IRevengeCap.class)
     public static final Capability<IRevengeCap> REVENGE_CAPABILITY = null;
+
 
 
     @Mod.Instance(MOD_ID)

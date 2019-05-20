@@ -103,8 +103,6 @@ public class ApatheticHandler {
             } else if (ent instanceof EntityWither) {
                 WitherHandler.createNewHandler((EntityWither) ent);
                 ApatheticMobs.logger.info("A wither has spawned!");
-            } else if (!ApatheticConfig.rules.playerWhitelist) if (ent instanceof EntitySlime) {
-                ((EntitySlime) ent).targetTasks.taskEntries.removeIf(t->t.action instanceof EntityAIFindEntityNearestPlayer);
             }
             ResourceLocation key = EntityList.getKey(ent);
             if (key != null) {
