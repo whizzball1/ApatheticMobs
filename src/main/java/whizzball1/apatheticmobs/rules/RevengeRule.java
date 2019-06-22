@@ -14,13 +14,18 @@ public class RevengeRule extends Rule {
     public boolean shouldExecute(Entity ent) {
         EntityLivingBase elb = (EntityLivingBase) ent;
         if (!ApatheticConfig.rules.revenge) return false;
-        if (elb.getRevengeTarget() == null) return false;
         if (!ent.hasCapability(ApatheticMobs.REVENGE_CAPABILITY, null)) return false;
-
+        IRevengeCap cap = elb.getCapability(ApatheticMobs.REVENGE_CAPABILITY, null);
+        if (elb.getRevengeTarget() == null && !cap.isVengeful()) {
+            //ApatheticMobs.logger.info("I have failed!");
+            return false;
+        }
+        //ApatheticMobs.logger.info(cap.isVengeful());
         return true;
     }
 
     public boolean execute(Entity ent) {
+        //ApatheticMobs.logger.info("Executing revenge rule!");
         EntityLivingBase elb = (EntityLivingBase) ent;
         IRevengeCap cap = elb.getCapability(ApatheticMobs.REVENGE_CAPABILITY, null);
         if (elb.getRevengeTarget() != null) {

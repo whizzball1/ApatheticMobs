@@ -3,11 +3,6 @@ package whizzball1.apatheticmobs.config;
 import net.minecraftforge.common.config.Config;
 import whizzball1.apatheticmobs.ApatheticMobs;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Config(modid=ApatheticMobs.MOD_ID)
 public class ApatheticConfig {
 
