@@ -40,7 +40,7 @@ public class RevengeRule extends Rule {
     }
 
     public int priority() {
-        return 1;
+        return 4;
     }
 
     public Set<String> allowedModules() {

@@ -21,7 +21,7 @@ public class DifficultyLockRule extends Rule {
     }
 
     public int priority() {
-        return 4;
+        return 0;
     }
 
     public boolean execute(Entity ent) {

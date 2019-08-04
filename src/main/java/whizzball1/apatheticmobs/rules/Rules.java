@@ -11,6 +11,7 @@ public class Rules {
         defaultRules.add(new DifficultyLockRule());
         defaultRules.add(new TargeterTypeRule());
         defaultRules.add(new RevengeRule());
+        defaultRules.add(new BossRule());
         defaultRules.sort(new Rule.RuleComparator());
     }
 }
