@@ -125,7 +125,8 @@ public class ApatheticHandler {
 
     @SubscribeEvent
     public void addCap(AttachCapabilitiesEvent<Entity> e) {
-        if (ApatheticConfig.rules.revenge) if (e.getObject() instanceof EntityLiving) if (!e.getObject().getEntityWorld().isRemote) {
+        if (ApatheticConfig.rules.revenge) if (e.getObject() instanceof EntityLiving)
+            if (e.getObject().getEntityWorld() != null) if (!e.getObject().getEntityWorld().isRemote) {
             e.addCapability(RevengeProvider.NAME, new RevengeProvider());
         }
     }
