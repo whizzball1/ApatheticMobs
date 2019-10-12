@@ -1,9 +1,9 @@
 package whizzball1.apatheticmobs.rules;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 import whizzball1.apatheticmobs.config.ApatheticConfig;
 
 import java.util.HashSet;
@@ -19,12 +19,12 @@ public class TargeterTypeRule extends Rule {
     }
 
     public boolean execute(Entity ent) {
-        if (!(ent instanceof EntityLiving)) {
+        if (!(ent instanceof MobEntity)) {
             return false;
         }
-        boolean yes = ApatheticConfig.rules.blacklist ?
-                !exclusions.contains(EntityList.getKey(ent.getClass())) :
-                inclusions.contains(EntityList.getKey(ent.getClass()));
+        boolean yes = ApatheticConfig.COMMON.blacklist.get() ?
+                !exclusions.contains(ForgeRegistries.ENTITIES.getKey(ent.getType())) :
+                inclusions.contains(ForgeRegistries.ENTITIES.getKey(ent.getType()));
         return yes;
     }
 

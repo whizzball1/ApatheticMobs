@@ -1,0 +1,30 @@
+{
+
+  "commands.apatheticmobs.aw.usage": "/apatheticwhitelist <get/add/remove> <playername>",
+  "commands.apatheticmobs.aw.playerfailed": "Player not found!",
+  "commands.apatheticmobs.aw.playerfound": "is already whitelisted!",
+
+
+  "text.apatheticmobs.config.revenge": "Revenge Option",
+  "text.apatheticmobs.config.revengetime": "Revenge Timer Option",
+  "text.apatheticmobs.config.revengetimer": "Revenge Timer Value",
+
+  "text.apatheticmobs.config.blacklist": "Blacklist or Whitelist Option",
+  "text.apatheticmobs.config.exclusions": "Excluded Mobs",
+  "text.apatheticmobs.config.inclusions": "Included Mobs",
+
+  "text.apatheticmobs.config.difficultylock": "Difficulty Lock Option",
+  "text.apatheticmobs.config.difficulties": "Allowed Difficulties",
+  "text.apatheticmobs.config.playerwhitelist": "Player Whitelist Option",
+
+  "text.apatheticmobs.config.bossoption": "General Boss Option",
+
+  "text.apatheticmobs.config.dragonflies": "Dragon Flying Attack Option",
+  "text.apatheticmobs.config.dragonsits": "Dragon Sitting Attack Option",
+  "text.apatheticmobs.config.witherrevenge": "Wither Revenge Option",
+  "text.apatheticmobs.config.witherattacks": "Wither Attack Option",
+
+  "text.apatheticmobs.config.gaia": "Gaia Attack Option",
+  "text.apatheticmobs.config.chaosprojectiles": "Chaos Dragon Projectile Option"
+
+}
