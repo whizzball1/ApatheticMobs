@@ -8,11 +8,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 import whizzball1.apatheticmobs.capability.IRevengeCap;
 import whizzball1.apatheticmobs.capability.RevengeCapFactory;
 import whizzball1.apatheticmobs.capability.RevengeStorage;
+import whizzball1.apatheticmobs.command.ApatheticCommands;
 import whizzball1.apatheticmobs.config.ApatheticConfig;
 import whizzball1.apatheticmobs.data.WhitelistData;
 import whizzball1.apatheticmobs.handlers.ApatheticHandler;
@@ -53,8 +56,8 @@ public class ApatheticMobs {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStarted);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ApatheticConfig::onReload);
+        MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ApatheticConfig.COMMON_CONFIG);
-        ApatheticConfig.loadConfig(ApatheticConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("apatheticmobs-common.toml"));
         MinecraftForge.EVENT_BUS.register(new ApatheticHandler());
         MinecraftForge.EVENT_BUS.register(new RuleHandler());
     }
@@ -89,6 +92,11 @@ public class ApatheticMobs {
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public void serverStarting(FMLServerStartingEvent event) {
+        ApatheticCommands.init(event.getCommandDispatcher());
     }
 
 

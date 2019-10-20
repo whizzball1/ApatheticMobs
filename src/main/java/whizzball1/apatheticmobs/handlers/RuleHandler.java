@@ -21,7 +21,7 @@ public class RuleHandler {
             LivingEntity entity = e.getEntityLiving();
             if (entity instanceof MobEntity) {
                 ((MobEntity) entity).setAttackTarget(null);
-                entity.setRevengeTarget(null);
+                //entity.setRevengeTarget(null);
             }
         }
     }

@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 //apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.14-beta-1.0'
+version = '1.14-beta-1.0.1'
 group = 'whizzball1.apatheticmobs' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'apatheticmobs'
 
@@ -28,7 +28,7 @@ minecraft {
     mappings channel: 'snapshot', version: '20191012-1.14.3'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
-    accessTransformer = file('src/main/resources/META-INF/apatheticmobs_at.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -59,7 +59,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                apatheticmobs {
                     source sourceSets.main
                 }
             }

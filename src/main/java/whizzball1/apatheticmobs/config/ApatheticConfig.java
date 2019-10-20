@@ -139,17 +139,17 @@ public class ApatheticConfig {
         COMMON = specPair.getLeft();
     }
 
-    public static void loadConfig(ForgeConfigSpec spec, Path path) {
-
-        final CommentedFileConfig configData = CommentedFileConfig.builder(path)
-                .sync()
-                .autosave()
-                .writingMode(WritingMode.REPLACE)
-                .build();
-
-        configData.load();
-        spec.setConfig(configData);
-    }
+//    public static void loadConfig(ForgeConfigSpec spec, Path path) {
+//
+//        final CommentedFileConfig configData = CommentedFileConfig.builder(path)
+//                .sync()
+//                .autosave()
+//                .writingMode(WritingMode.REPLACE)
+//                .build();
+//
+//        configData.load();
+//        spec.setConfig(configData);
+//    }
 
     @SubscribeEvent
     public static void onReload(final ModConfig.ConfigReloading e) {
