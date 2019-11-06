@@ -91,7 +91,7 @@ public class ApatheticConfig {
                     .translation("text.apatheticmobs.config.difficulties")
                     .define("difficulties", Arrays.asList("easy"), o -> o instanceof String);
 
-            playerWhitelist = builder.comment("If true, mod will only cause mobs to ignore players whitelisted by the command apatheticwhitelist.")
+            playerWhitelist = builder.comment("If true, mod will only cause mobs to ignore players whitelisted by the command '/apathy whitelist'.")
                     .translation("text.apatheticmobs.config.playerwhitelist")
                     .define("player_whitelist", false);
 

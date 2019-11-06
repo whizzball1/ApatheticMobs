@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import whizzball1.apatheticmobs.data.WhitelistData;
 
 import java.util.Map;
@@ -80,11 +81,33 @@ public class ApatheticCommands {
 //        }));
 
         LiteralArgumentBuilder<CommandSource> litAdd = Commands.literal("add");
-        litAdd.then(Commands.argument("player", EntityArgument.player())).executes(context -> {
+        litAdd.then(Commands.argument("player", EntityArgument.player()).executes(context -> {
             GameProfile gameProfile = EntityArgument.getPlayer(context, "player").getGameProfile();
+            UUID id = gameProfile.getId();
+            WhitelistData data = WhitelistData.get(context.getSource().getWorld());
+            if (!data.playerSet.contains(id)) {
+                data.playerSet.add(id);
+                data.markDirty();
+            } else {
+                send(new TranslationTextComponent("commands.apatheticmobs.aw.playerfound"), context.getSource());
+            }
             send(new StringTextComponent(gameProfile.getId().toString()), context.getSource());
-        return 0;});
+        return 0;}));
         whitelistCommand.then(litAdd);
+
+        LiteralArgumentBuilder<CommandSource> litRemove = Commands.literal("remove");
+        litRemove.then(Commands.argument("player", EntityArgument.player()).executes(context -> {
+            GameProfile gameProfile = EntityArgument.getPlayer(context, "player").getGameProfile();
+            UUID id = gameProfile.getId();
+            WhitelistData data = WhitelistData.get(context.getSource().getWorld());
+            if (data.playerSet.contains(id)) {
+                data.playerSet.remove(id);
+                data.markDirty();
+            } else {
+                send(new TranslationTextComponent("commands.apatheticmobs.aw.playerfailed"), context.getSource());
+            }
+        return 0;}));
+        whitelistCommand.then(litRemove);
         root.then(whitelistCommand);
         //COMMANDS.forEach((s, command) -> registerCommandInternal(root, command));
         dispatcher.register(root);
